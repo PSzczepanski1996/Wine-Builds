@@ -61,7 +61,7 @@ export EXPERIMENTAL_WOW64="${EXPERIMENTAL_WOW64:-false}"
 #
 # If you don't want to compile a custom Wine source code, then just leave this
 # variable empty.
-export CUSTOM_SRC_PATH=""
+export CUSTOM_SRC_PATH="$HOME/wine-builds/wine-src"
 
 # Set to true to download and prepare the source code, but do not compile it.
 # If this variable is set to true, root rights are not required.
