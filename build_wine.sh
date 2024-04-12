@@ -35,7 +35,8 @@ export WINE_BRANCH="${WINE_BRANCH:-staging}"
 
 # Available proton branches: proton_3.7, proton_3.16, proton_4.2, proton_4.11
 # proton_5.0, proton_5.13, experimental_5.13, proton_6.3, experimental_6.3
-# proton_7.0, experimental_7.0, proton_8.0, experimental_8.0, bleeding-edge
+# proton_7.0, experimental_7.0, proton_8.0, experimental_8.0, experimental_9.0
+# bleeding-edge
 # Leave empty to use the default branch.
 export PROTON_BRANCH="${PROTON_BRANCH:-proton_8.0}"
 
@@ -231,8 +232,12 @@ elif [ "$WINE_BRANCH" = "proton" ]; then
 		git clone https://github.com/ValveSoftware/wine -b "${PROTON_BRANCH}"
 	fi
 
-	if [ "${PROTON_BRANCH}" = "experimental_8.0" ] || [ "${PROTON_BRANCH}" = "bleeding-edge" ]; then
+	if [ "${PROTON_BRANCH}" = "experimental_8.0" ]; then
 		patch -d wine -Np1 < "${scriptdir}"/proton-exp-8.0.patch
+	fi
+
+	if [ "${PROTON_BRANCH}" = "experimental_9.0" ] || [ "${PROTON_BRANCH}" = "bleeding-edge" ]; then
+		patch -d wine -Np1 < "${scriptdir}"/proton-exp-9.0.patch
 	fi
 
 	WINE_VERSION="$(cat wine/VERSION | tail -c +14)-$(git -C wine rev-parse --short HEAD)"
@@ -316,6 +321,7 @@ fi
 cd wine || exit 1
 dlls/winevulkan/make_vulkan
 tools/make_requests
+tools/make_specfiles
 autoreconf -f
 cd "${BUILD_DIR}" || exit 1
 
